@@ -241,7 +241,7 @@ async function test(policyName) {
         return Promise.reject(error)
       }
 
-      let region = await Promise.race([getFilmPage(80018499), timeout()])
+      let region = await Promise.race([getFilmPage(80018499, policyName), timeout()])
       return { region, policy: policyName, status: STATUS_ORIGINAL_AVAILABLE }
     })
     .catch(error => {
