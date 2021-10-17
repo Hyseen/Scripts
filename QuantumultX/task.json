@@ -1,0 +1,141 @@
+{
+  "id": "Helge_0x00",
+  "name": "Helge_0x00 脚本合集",
+  "description": "",
+  "author": "@Helge_0x00",
+  "icon": "https://avatars.githubusercontent.com/u/17402489",
+  "repo": "https://github.com/Hyseen/Scripts",
+  "apps": [
+    {
+      "id": "DisneyPlusPolicySwitcher",
+      "name": "Disney+ 策略组切换",
+      "keys": [
+        "Helge_0x00.Disney_Debug",
+        "Helge_0x00.Disney_Retry",
+        "Helge_0x00.Disney_Recheck",
+        "Helge_0x00.Disney_Policy",
+        "Helge_0x00.Disney_Avaliable_Policies"
+      ],
+      "descs_html": [],
+      "settings": [
+        {
+          "id": "Helge_0x00.Disney_Debug",
+          "name": "Debug 模式",
+          "val": false,
+          "type": "boolean",
+          "desc": "Debug 模式, 用于调试脚本"
+        },
+        {
+          "id": "Helge_0x00.Disney_Retry",
+          "name": "失败重试",
+          "val": true,
+          "type": "boolean",
+          "desc": "检测超时或失败时是否重试"
+        },
+        {
+          "id": "Helge_0x00.Disney_Recheck",
+          "name": "切换策略前是否检查可用性",
+          "val": false,
+          "type": "boolean",
+          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，提高切换效率，但是有可能切换的新节点不可用"
+        },
+        {
+          "id": "Helge_0x00.Disney_Policy",
+          "name": "策略组名",
+          "val": "",
+          "type": "text",
+          "desc": "Disney+ 分流的策略组名"
+        }
+      ],
+      "scripts": [
+        {
+          "name": "Disney+ 解锁检测",
+          "script": "https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_checker.js"
+        },
+        {
+          "name": "Disney+ 策略切换",
+          "script": "https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_switcher.js"
+        }
+      ],
+      "author": "@Helge_0x00",
+      "repo": "https://github.com/Hyseen/Scripts/tree/master/QuantumultX/DisneyPlusPolicySwitcher",
+      "icons": [
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Disney+.png",
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png"
+      ]
+    },
+    {
+      "id": "NetflixPolicySwitcher",
+      "name": "Netflix 策略组切换",
+      "keys": [
+        "Helge_0x00.Netflix_Debug",
+        "Helge_0x00.Netflix_Retry",
+        "Helge_0x00.Netflix_Recheck",
+        "Helge_0x00.Netflix_Policy",
+        "Helge_0x00.Netflix_Full_Avaliable_Policies",
+        "Helge_0x00.Netflix_Original_Avaliable_Policies"
+      ],
+      "descs_html": [],
+      "settings": [
+        {
+          "id": "Helge_0x00.Netflix_Debug",
+          "name": "Debug 模式",
+          "val": false,
+          "type": "boolean",
+          "desc": "Debug 模式, 用于调试脚本"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Retry",
+          "name": "失败重试",
+          "val": true,
+          "type": "boolean",
+          "desc": "检测超时或失败时是否重试"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Recheck",
+          "name": "切换策略前是否检查可用性",
+          "val": false,
+          "type": "boolean",
+          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，提高切换效率，但是有可能切换的新节点不可用"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Policy",
+          "name": "策略组名",
+          "val": "",
+          "type": "text",
+          "desc": "Netflix 分流的策略组名"
+        }
+      ],
+      "scripts": [
+        {
+          "name": "Netflix 解锁检测",
+          "script": "https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_checker.js"
+        },
+        {
+          "name": "Netflix 策略切换",
+          "script": "https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_switcher.js"
+        }
+      ],
+      "author": "@Helge_0x00",
+      "repo": "https://github.com/Hyseen/Scripts/tree/master/QuantumultX/NetflixPolicySwitcher",
+      "icons": [
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Netflix.png",
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png"
+      ]
+    }
+  ],
+  "task": [
+    {
+      "config": "0 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_checker.js, tag=Disney+ 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png, enabled=true"
+    },
+    {
+      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_switcher.js, tag=Disney+ 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png, enabled=false"
+    },
+    {
+      "config": "0 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_checker.js, tag=Netflix 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png, enabled=true"
+    },
+    {
+      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_switcher.js, tag=Neflix 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png, enabled=false"
+    }
+  ]
+}
