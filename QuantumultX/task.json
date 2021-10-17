@@ -16,7 +16,15 @@
         "Helge_0x00.Disney_Policy",
         "Helge_0x00.Disney_Avaliable_Policies"
       ],
-      "descs_html": [],
+      "descs_html": [
+        "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
+        "<h5>1. 配置 Disney+ 分流规则，并关联策略组（默认策略组为：Disney+，可在 BoxJs 中修改）</h5>",
+        "<h5>2. 在 BoxJs 中订阅 <a href=\"https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/task.json\">脚本集合</a></h5>",
+        "<h5>3. 在 task gallery 中订阅 <a href=\"https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/task.json\">脚本集合</a></h5>",
+        "<h5>4. 在 BoxJs 中配置分流策略组名称，以及其他参数</h5>",
+        "<h5>5. 必须先运行一次「解锁检测」脚本，后续该脚本会定时执行</h5>",
+        "<h5>6. 在 BoxJs 或 QuanX 中运行「策略切换」即可自动切换策略</h5>"
+      ],
       "settings": [
         {
           "id": "Helge_0x00.Disney_Debug",
@@ -75,7 +83,15 @@
         "Helge_0x00.Netflix_Full_Avaliable_Policies",
         "Helge_0x00.Netflix_Original_Avaliable_Policies"
       ],
-      "descs_html": [],
+      "descs_html": [
+        "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
+        "<h5>1. 配置 Netflix 分流规则，并关联策略组（默认策略组为：Disney+，可在 BoxJs 中修改）</h5>",
+        "<h5>2. 在 BoxJs 中订阅 <a href=\"https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/task.json\">脚本集合</a></h5>",
+        "<h5>3. 在 task gallery 中订阅 <a href=\"https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/task.json\">脚本集合</a></h5>",
+        "<h5>4. 在 BoxJs 中配置分流策略组名称，以及其他参数</h5>",
+        "<h5>5. 必须先运行一次「解锁检测」脚本，后续该脚本会定时执行</h5>",
+        "<h5>6. 在 BoxJs 或 QuanX 中运行「策略切换」即可自动切换策略</h5>"
+      ],
       "settings": [
         {
           "id": "Helge_0x00.Netflix_Debug",
