@@ -9,13 +9,7 @@
     {
       "id": "DisneyPlusPolicySwitcher",
       "name": "Disney+ 策略组切换",
-      "keys": [
-        "Helge_0x00.Disney_Debug",
-        "Helge_0x00.Disney_Retry",
-        "Helge_0x00.Disney_Recheck",
-        "Helge_0x00.Disney_Policy",
-        "Helge_0x00.Disney_Avaliable_Policies"
-      ],
+      "keys": ["Helge_0x00.Disney_Avaliable_Policies"],
       "descs_html": [
         "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
         "<h5>1. 配置 Disney+ 分流规则，并关联策略组（默认策略组为：Disney+，可在 BoxJs 中修改）</h5>",
@@ -36,7 +30,7 @@
         {
           "id": "Helge_0x00.Disney_Retry",
           "name": "失败重试",
-          "val": true,
+          "val": false,
           "type": "boolean",
           "desc": "检测超时或失败时是否重试"
         },
@@ -45,7 +39,14 @@
           "name": "切换策略前是否检查可用性",
           "val": false,
           "type": "boolean",
-          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，提高切换效率，但是有可能切换的新节点不可用"
+          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，直接使用上次「解锁检测」脚本的测试结果，但是有可能切换的节点已经不可用"
+        },
+        {
+          "id": "Helge_0x00.Disney_Sort_By_Time",
+          "name": "选择耗时最少的策略",
+          "val": false,
+          "type": "boolean",
+          "desc": "选择检测耗时最少的策略，开启后执行「策略切换」脚本时会选择上次检测耗时最少的策略"
         },
         {
           "id": "Helge_0x00.Disney_Policy",
@@ -53,6 +54,20 @@
           "val": "",
           "type": "text",
           "desc": "Disney+ 分流的策略组名"
+        },
+        {
+          "id": "Helge_0x00.Disney_Concurrency",
+          "name": "检测并发度",
+          "val": "",
+          "type": "number",
+          "desc": "执行「解锁检测」脚本时允许同时检测多少个策略，默认为 10"
+        },
+        {
+          "id": "Helge_0x00.Disney_Timeout",
+          "name": "超时时间（毫秒）",
+          "val": "",
+          "type": "number",
+          "desc": "检测任务超时时间，默认为 8000 毫秒"
         }
       ],
       "scripts": [
@@ -69,20 +84,13 @@
       "repo": "https://github.com/Hyseen/Scripts/tree/master/QuantumultX/DisneyPlusPolicySwitcher",
       "icons": [
         "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Disney+.png",
-        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png"
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney+.png"
       ]
     },
     {
       "id": "NetflixPolicySwitcher",
       "name": "Netflix 策略组切换",
-      "keys": [
-        "Helge_0x00.Netflix_Debug",
-        "Helge_0x00.Netflix_Retry",
-        "Helge_0x00.Netflix_Recheck",
-        "Helge_0x00.Netflix_Policy",
-        "Helge_0x00.Netflix_Full_Avaliable_Policies",
-        "Helge_0x00.Netflix_Original_Avaliable_Policies"
-      ],
+      "keys": ["Helge_0x00.Netflix_Full_Avaliable_Policies", "Helge_0x00.Netflix_Original_Avaliable_Policies"],
       "descs_html": [
         "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
         "<h5>1. 配置 Netflix 分流规则，并关联策略组（默认策略组为：Netflix，可在 BoxJs 中修改）</h5>",
@@ -103,7 +111,7 @@
         {
           "id": "Helge_0x00.Netflix_Retry",
           "name": "失败重试",
-          "val": true,
+          "val": false,
           "type": "boolean",
           "desc": "检测超时或失败时是否重试"
         },
@@ -112,7 +120,14 @@
           "name": "切换策略前是否检查可用性",
           "val": false,
           "type": "boolean",
-          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，提高切换效率，但是有可能切换的新节点不可用"
+          "desc": "切换策略前是否再次检测被选策略的可用性。默认不检查，直接使用上次「解锁检测」脚本的测试结果，但是有可能切换的节点已经不可用"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Sort_By_Time",
+          "name": "选择耗时最少的策略",
+          "val": false,
+          "type": "boolean",
+          "desc": "选择检测耗时最少的策略，开启后执行「策略切换」脚本时会选择上次检测耗时最少的策略"
         },
         {
           "id": "Helge_0x00.Netflix_Policy",
@@ -120,6 +135,20 @@
           "val": "",
           "type": "text",
           "desc": "Netflix 分流的策略组名"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Concurrency",
+          "name": "检测并发度",
+          "val": "",
+          "type": "number",
+          "desc": "执行「解锁检测」脚本时允许同时检测多少个策略，默认为 10"
+        },
+        {
+          "id": "Helge_0x00.Netflix_Timeout",
+          "name": "超时时间（毫秒）",
+          "val": "",
+          "type": "number",
+          "desc": "检测任务超时时间，默认为 5000 毫秒"
         }
       ],
       "scripts": [
@@ -135,23 +164,23 @@
       "author": "@Helge_0x00",
       "repo": "https://github.com/Hyseen/Scripts/tree/master/QuantumultX/NetflixPolicySwitcher",
       "icons": [
-        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Netflix.png",
-        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png"
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Netflix_Letter.png",
+        "https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix_Letter.png"
       ]
     }
   ],
   "task": [
     {
-      "config": "0 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_checker.js, tag=Disney+ 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png, enabled=true"
+      "config": "30 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_checker.js, tag=Disney+ 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney+.png, enabled=true"
     },
     {
-      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_switcher.js, tag=Disney+ 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney.png, enabled=false"
+      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/DisneyPlusPolicySwitcher/disney_switcher.js, tag=Disney+ 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Disney+.png, enabled=false"
     },
     {
-      "config": "0 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_checker.js, tag=Netflix 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png, enabled=true"
+      "config": "0 */2 * * * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_checker.js, tag=Netflix 解锁检测, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix_Letter.png, enabled=true"
     },
     {
-      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_switcher.js, tag=Neflix 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix.png, enabled=false"
+      "config": "0 0 29 2 * https://raw.githubusercontent.com/Hyseen/Scripts/master/QuantumultX/NetflixPolicySwitcher/netflix_switcher.js, tag=Neflix 策略切换, img-url=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/Color/Netflix_Letter.png, enabled=false"
     }
   ]
 }
