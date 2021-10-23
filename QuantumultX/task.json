@@ -9,7 +9,9 @@
     {
       "id": "DisneyPlusPolicySwitcher",
       "name": "Disney+ 策略组切换",
-      "keys": ["Helge_0x00.Disney_Avaliable_Policies"],
+      "keys": [
+        "Helge_0x00.Disney_Available_Policies"
+      ],
       "descs_html": [
         "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
         "<h5>1. 配置 Disney+ 分流规则，并关联策略组（默认策略组为：Disney+，可在 BoxJs 中修改）</h5>",
@@ -90,7 +92,10 @@
     {
       "id": "NetflixPolicySwitcher",
       "name": "Netflix 策略组切换",
-      "keys": ["Helge_0x00.Netflix_Full_Avaliable_Policies", "Helge_0x00.Netflix_Original_Avaliable_Policies"],
+      "keys": [
+        "Helge_0x00.Netflix_Full_Available_Policies",
+        "Helge_0x00.Netflix_Original_Available_Policies"
+      ],
       "descs_html": [
         "<h4>⚠️ 该脚本仅支持 QuanX 598+ 版本</h4>",
         "<h5>1. 配置 Netflix 分流规则，并关联策略组（默认策略组为：Netflix，可在 BoxJs 中修改）</h5>",
