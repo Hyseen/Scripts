@@ -8,7 +8,7 @@ const $ = new Env('Netflix 解锁检测')
 let policyName = $.getval('Helge_0x00.Netflix_Policy') || 'Netflix'
 let debug = $.getval('Helge_0x00.Netflix_Debug') === 'true'
 let retry = $.getval('Helge_0x00.Netflix_Retry') === 'true'
-let t = parseInt($.getval('Helge_0x00.Netflix_Timeout')) || 5000
+let t = parseInt($.getval('Helge_0x00.Netflix_Timeout')) || 8000
 let sortByTime = $.getval('Helge_0x00.Netflix_Sort_By_Time') === 'true'
 let concurrency = parseInt($.getval('Helge_0x00.Netflix_Concurrency')) || 10
 
@@ -104,7 +104,7 @@ function getFilmPage(filmId, policyName) {
       response => {
         let {
           statusCode,
-          headers: { Location: location, 'x-originating-url': originatingUrl },
+          headers: { Location: location, 'X-Originating-URL': originatingUrl },
         } = response
 
         if (statusCode === 403) {
@@ -119,19 +119,26 @@ function getFilmPage(filmId, policyName) {
 
         if (statusCode === 302 || statusCode === 301 || statusCode === 200) {
           if (debug) {
-            console.log(`${policyName} getFilmPage, ${statusCode}, Location: ${location}, originatingUrl: ${originatingUrl}`)
+            if (statusCode === 200) {
+              console.log(`${policyName} filmId: ${filmId}, statusCode: ${statusCode}, X-Originating-URL: ${originatingUrl}`)
+            } else {
+              console.log(`${policyName} filmId: ${filmId}, statusCode: ${statusCode}, Location: ${location}`)
+            }
           }
 
           let url = location ?? originatingUrl
           let region = url.split('/')[3]
           region = region.split('-')[0]
           if (region === 'title') {
-            region = 'us'
+            region = 'US'
           }
           resolve(region.toUpperCase())
           return
         }
 
+        if (debug) {
+          console.log(`${policyName} filmId: ${filmId}, statusCode: ${statusCode}, response: ${JSON.stringify(response)}`)
+        }
         reject('Not Available')
       },
       reason => {
