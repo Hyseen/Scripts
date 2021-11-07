@@ -18,8 +18,14 @@ let concurrency = parseInt($.getval('Helge_0x00.Disney_Concurrency')) || 10
   }
 
   let policies = await sendMessage({ action: 'get_customized_policy' })
+  if (!isValidPolicy(policies[disneyPolicyName])) {
+    disneyPolicyName = lookupTargetPolicy(policies)
+    console.log(`更新策略组名称 ➟ ${disneyPolicyName}`)
+    $.setval(disneyPolicyName, 'Helge_0x00.Disney_Policy')
+  }
+
   let candidatePolicies = lookupChildrenNode(policies, disneyPolicyName)
-  let availablePolicies = await testPolicies(candidatePolicies)
+  let availablePolicies = await testPolicies(disneyPolicyName, candidatePolicies)
 
   if (sortByTime) {
     availablePolicies = availablePolicies.sort((m, n) => m.time - n.time)
@@ -37,11 +43,11 @@ let concurrency = parseInt($.getval('Helge_0x00.Disney_Concurrency')) || 10
     $.done()
   })
 
-async function testPolicies(policies = []) {
+async function testPolicies(policyName, policies = []) {
   let failedPolicies = []
   let availablePolicies = []
   let echo = results => {
-    console.log(`\n策略组检测结果：`)
+    console.log(`\n策略组 ${policyName} 检测结果：`)
     for (let { policy, status, region, time } of results) {
       switch (status) {
         case STATUS_COMING: {
@@ -313,8 +319,8 @@ function sendMessage(message) {
 
 function lookupChildrenNode(policies = {}, targetPolicyName) {
   let targetPolicy = policies[targetPolicyName]
-  if (targetPolicy === undefined || targetPolicy?.type === undefined || !Array.isArray(targetPolicy?.candidates)) {
-    throw '策略组名未填写或填写有误'
+  if (!isValidPolicy(targetPolicy)) {
+    throw '策略组名未填写或填写有误，请在 BoxJS 中填写正确的策略组名称'
   }
   if (targetPolicy?.type !== 'static') {
     throw `${targetPolicyName} 不是 static 类型的策略组`
@@ -349,6 +355,23 @@ function lookupChildrenNode(policies = {}, targetPolicyName) {
   }
 
   return [...candidates]
+}
+
+function lookupTargetPolicy(policies = {}) {
+  let policyNames = Object.entries(policies)
+    .filter(([key, val]) => key.search(/Disney\+|Disney Plus|迪士尼/gi) !== -1)
+    .map(([key, val]) => key)
+  if (policyNames.length === 1) {
+    return policyNames[0]
+  } else if (policyNames.length <= 0) {
+    throw '没有找到 Disney+ 策略组，请在 BoxJS 中填写正确的策略组名称'
+  } else {
+    throw `找到多个 Disney+ 策略组，请在 BoxJS 中填写正确的策略组名称`
+  }
+}
+
+function isValidPolicy(policy) {
+  return policy !== undefined && policy?.type !== undefined && Array.isArray(policy?.candidates)
 }
 
 // prettier-ignore

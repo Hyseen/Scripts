@@ -18,9 +18,14 @@ let concurrency = parseInt($.getval('Helge_0x00.Netflix_Concurrency')) || 10
   }
 
   let policies = await sendMessage({ action: 'get_customized_policy' })
+  if (!isValidPolicy(policies[policyName])) {
+    policyName = lookupTargetPolicy(policies)
+    console.log(`更新策略组名称 ➟ ${policyName}`)
+    $.setval(policyName, 'Helge_0x00.Netflix_Policy')
+  }
   let candidatePolicies = lookupChildrenNode(policies, policyName)
 
-  let { fullAvailablePolicies, originalAvailablePolicies } = await testPolicies(candidatePolicies)
+  let { fullAvailablePolicies, originalAvailablePolicies } = await testPolicies(policyName, candidatePolicies)
   if (sortByTime) {
     fullAvailablePolicies = fullAvailablePolicies.sort((m, n) => m.time - n.time)
     originalAvailablePolicies = originalAvailablePolicies.sort((m, n) => m.time - n.time)
@@ -38,12 +43,12 @@ let concurrency = parseInt($.getval('Helge_0x00.Netflix_Concurrency')) || 10
     $.done()
   })
 
-async function testPolicies(policies = []) {
+async function testPolicies(policyName, policies = []) {
   let failedPolicies = []
   let fullAvailablePolicies = []
   let originalAvailablePolicies = []
   let echo = results => {
-    console.log(`\n策略组检测结果：`)
+    console.log(`\n策略组 ${policyName} 检测结果：`)
     for (let { policy, status, region, time } of results) {
       switch (status) {
         case STATUS_FULL_AVAILABLE: {
@@ -56,7 +61,7 @@ async function testPolicies(policies = []) {
         case STATUS_ORIGINAL_AVAILABLE: {
           let flag = getCountryFlagEmoji(region) ?? ''
           let regionName = REGIONS?.[region.toUpperCase()]?.chinese ?? ''
-          console.log(`${policy}: 仅支持 Netflix 自制剧 ➟ ${flag}${regionName}`)
+          console.log(`${policy}: 仅支持自制剧 ➟ ${flag}${regionName}`)
           originalAvailablePolicies.push({ policy, region, status, time })
           break
         }
@@ -221,8 +226,8 @@ function sendMessage(message) {
 
 function lookupChildrenNode(policies = {}, targetPolicyName) {
   let targetPolicy = policies[targetPolicyName]
-  if (targetPolicy === undefined || targetPolicy?.type === undefined || !Array.isArray(targetPolicy?.candidates)) {
-    throw '策略组名未填写或填写有误'
+  if (!isValidPolicy(targetPolicy)) {
+    throw '策略组名未填写或填写有误，请在 BoxJS 中填写正确的策略组名称'
   }
   if (targetPolicy?.type !== 'static') {
     throw `${targetPolicyName} 不是 static 类型的策略组`
@@ -257,6 +262,23 @@ function lookupChildrenNode(policies = {}, targetPolicyName) {
   }
 
   return [...candidates]
+}
+
+function lookupTargetPolicy(policies = {}) {
+  let policyNames = Object.entries(policies)
+    .filter(([key, val]) => key.search(/Netflix|奈飞/gi) !== -1)
+    .map(([key, val]) => key)
+  if (policyNames.length === 1) {
+    return policyNames[0]
+  } else if (policyNames.length <= 0) {
+    throw '没有找到 Netflix 策略组，请在 BoxJS 中填写正确的策略组名称'
+  } else {
+    throw `找到多个 Netflix 策略组，请在 BoxJS 中填写正确的策略组名称`
+  }
+}
+
+function isValidPolicy(policy) {
+  return policy !== undefined && policy?.type !== undefined && Array.isArray(policy?.candidates)
 }
 
 // prettier-ignore

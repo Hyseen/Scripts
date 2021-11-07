@@ -16,11 +16,14 @@ let concurrency = parseInt($.getval('Helge_0x00.Disney_Concurrency')) || 10
   if (!$.isQuanX()) {
     throw '该脚本仅支持在 Quantumult X 中运行'
   }
+  let policies = await sendMessage({ action: 'get_customized_policy' })
+  if (!isValidPolicy(policies[disneyPolicyName])) {
+    disneyPolicyName = lookupTargetPolicy(policies)
+    console.log(`更新策略组名称 ➟ ${disneyPolicyName}`)
+    $.setval(disneyPolicyName, 'Helge_0x00.Disney_Policy')
+  }
 
   let curPolicyPath = await getSelectedPolicy(disneyPolicyName)
-  if (!Array.isArray(curPolicyPath) && curPolicyPath.length < 2) {
-    throw 'Disney+ 策略组名未填写或填写有误'
-  }
   let selected = curPolicyPath[1]
   let actualNode = curPolicyPath[curPolicyPath.length - 1]
   if (debug) {
@@ -43,7 +46,6 @@ let concurrency = parseInt($.getval('Helge_0x00.Disney_Concurrency')) || 10
     cachePolicies = []
   }
 
-  let policies = await sendMessage({ action: 'get_customized_policy' })
   let paths = lookupPath(policies, disneyPolicyName)
   let nodes = new Set(paths.map(path => path[path.length - 1]).filter(item => !['proxy', 'direct', 'reject'].includes(item)))
 
@@ -401,6 +403,23 @@ function lookupPath(policies = {}, policyGroupName = '', curPath = [], paths = [
     lookupPath(policies, policy, [...curPath], paths)
   }
   return paths
+}
+
+function lookupTargetPolicy(policies = {}) {
+  let policyNames = Object.entries(policies)
+    .filter(([key, val]) => key.search(/Disney\+|Disney Plus|迪士尼/gi) !== -1)
+    .map(([key, val]) => key)
+  if (policyNames.length === 1) {
+    return policyNames[0]
+  } else if (policyNames.length <= 0) {
+    throw '没有找到 Disney+ 策略组，请在 BoxJS 中填写正确的策略组名称'
+  } else {
+    throw `找到多个 Disney+ 策略组，请在 BoxJS 中填写正确的策略组名称`
+  }
+}
+
+function isValidPolicy(policy) {
+  return policy !== undefined && policy?.type !== undefined && Array.isArray(policy?.candidates)
 }
 
 // prettier-ignore

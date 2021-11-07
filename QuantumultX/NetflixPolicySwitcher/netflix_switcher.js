@@ -17,10 +17,14 @@ let concurrency = parseInt($.getval('Helge_0x00.Netflix_Concurrency')) || 10
     throw '该脚本仅支持在 Quantumult X 中运行'
   }
 
-  let curPolicyPath = await getSelectedPolicy(policyName)
-  if (!Array.isArray(curPolicyPath) && curPolicyPath.length < 2) {
-    throw 'Netflix 策略组名未填写或填写有误'
+  let policies = await sendMessage({ action: 'get_customized_policy' })
+  if (!isValidPolicy(policies[policyName])) {
+    policyName = lookupTargetPolicy(policies)
+    console.log(`更新策略组名称 ➟ ${policyName}`)
+    $.setval(policyName, 'Helge_0x00.Netflix_Policy')
   }
+
+  let curPolicyPath = await getSelectedPolicy(policyName)
   let selected = curPolicyPath[1]
   let actualNode = curPolicyPath[curPolicyPath.length - 1]
   if (debug) {
@@ -51,7 +55,6 @@ let concurrency = parseInt($.getval('Helge_0x00.Netflix_Concurrency')) || 10
     cacheOriginalPolicies = []
   }
 
-  let policies = await sendMessage({ action: 'get_customized_policy' })
   let paths = lookupPath(policies, policyName)
   let nodes = new Set(paths.map(path => path[path.length - 1]).filter(item => !['proxy', 'direct', 'reject'].includes(item)))
 
@@ -340,6 +343,23 @@ function lookupPath(policies = {}, policyGroupName = '', curPath = [], paths = [
     lookupPath(policies, policy, [...curPath], paths)
   }
   return paths
+}
+
+function lookupTargetPolicy(policies = {}) {
+  let policyNames = Object.entries(policies)
+    .filter(([key, val]) => key.search(/Netflix|奈飞/gi) !== -1)
+    .map(([key, val]) => key)
+  if (policyNames.length === 1) {
+    return policyNames[0]
+  } else if (policyNames.length <= 0) {
+    throw '没有找到 Netflix 策略组，请在 BoxJS 中填写正确的策略组名称'
+  } else {
+    throw `找到多个 Netflix 策略组，请在 BoxJS 中填写正确的策略组名称`
+  }
+}
+
+function isValidPolicy(policy) {
+  return policy !== undefined && policy?.type !== undefined && Array.isArray(policy?.candidates)
 }
 
 // prettier-ignore
