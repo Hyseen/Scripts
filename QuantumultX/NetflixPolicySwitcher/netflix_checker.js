@@ -266,7 +266,7 @@ function lookupChildrenNode(policies = {}, targetPolicyName) {
 
 function lookupTargetPolicy(policies = {}) {
   let policyNames = Object.entries(policies)
-    .filter(([key, val]) => key.search(/Netflix|奈飞/gi) !== -1)
+    .filter(([key, val]) => key.search(/Netflix|奈飞|网飞/gi) !== -1)
     .map(([key, val]) => key)
   if (policyNames.length === 1) {
     return policyNames[0]
