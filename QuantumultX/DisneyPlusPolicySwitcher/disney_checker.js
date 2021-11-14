@@ -347,8 +347,8 @@ function lookupChildrenNode(policies = {}, targetPolicyName) {
         continue
       }
 
-      // 没有遍历过的策略，也不是即将遍历的策略
-      if (!looked.has(policy) && !looking.includes(policy)) {
+      // 没有遍历过的策略，也不是即将遍历的策略，并且是 static 类型的策略
+      if (!looked.has(policy) && !looking.includes(policy) && policies[policy]?.type === 'static') {
         looking.push(policy)
       }
     }
