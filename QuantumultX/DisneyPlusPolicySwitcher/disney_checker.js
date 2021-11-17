@@ -162,6 +162,43 @@ function getHomePage(policyName) {
   })
 }
 
+function testPublicGraphqlAPI(policyName, accessToken) {
+  return new Promise((resolve, reject) => {
+    let request = {
+      url: 'https://disney.api.edge.bamgrid.com/v1/public/graphql',
+      method: 'POST',
+      headers: {
+        'Accept-Language': 'en',
+        Authorization: accessToken,
+        'Content-Type': 'application/json',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.71 Safari/537.36',
+      },
+      opts: {
+        redirection: false,
+        policy: policyName,
+      },
+      body: JSON.stringify({
+        query:
+          'query($preferredLanguages: [String!]!, $version: String) {globalization(version: $version) { uiLanguage(preferredLanguages: $preferredLanguages) }}',
+        variables: { version: '1.5.0', preferredLanguages: ['en'] },
+      }),
+    }
+
+    $task.fetch(request).then(
+      response => {
+        let { statusCode } = response
+        resolve(statusCode === 200)
+      },
+      reason => {
+        if (debug) {
+          console.log(`${policyName} queryLanguage Error: ${reason.error}`)
+        }
+        reject('Error')
+      }
+    )
+  })
+}
+
 function getLocationInfo(policyName) {
   return new Promise((resolve, reject) => {
     let request = {
@@ -209,12 +246,14 @@ function getLocationInfo(policyName) {
           reject('Not Available')
           return
         }
-
         let {
-          inSupportedLocation,
-          location: { countryCode },
-        } = JSON.parse(body)?.extensions?.sdk?.session
-        resolve({ inSupportedLocation, countryCode })
+          token: { accessToken },
+          session: {
+            inSupportedLocation,
+            location: { countryCode },
+          },
+        } = JSON.parse(body)?.extensions?.sdk
+        resolve({ inSupportedLocation, countryCode, accessToken })
       },
       reason => {
         if (debug) {
@@ -230,13 +269,17 @@ async function test(policyName) {
   console.log(`开始检测 ${policyName}`)
   let startTime = new Date().getTime()
   try {
-    let { countryCode, inSupportedLocation } = await Promise.race([getLocationInfo(policyName), timeout(t)])
+    let { countryCode, inSupportedLocation, accessToken } = await Promise.race([getLocationInfo(policyName), timeout(t)])
     if (debug) {
       console.log(`${policyName} getLocationInfo: countryCode=${countryCode}, inSupportedLocation=${inSupportedLocation}`)
     }
 
     // 支持 Disney+
     if (inSupportedLocation === true || inSupportedLocation === 'true') {
+      let support = await Promise.race([testPublicGraphqlAPI(policyName, accessToken), timeout(t)])
+      if (!support) {
+        return { status: STATUS_NOT_AVAILABLE, policy: policyName, time: new Date().getTime() - startTime }
+      }
       return {
         region: countryCode,
         status: STATUS_AVAILABLE,
