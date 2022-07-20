@@ -116,7 +116,7 @@ function getHomePage(policyName) {
             console.log(`${policyName} getHomePage, 302, Location: ${location}`)
           }
           // 不可用
-          if (location.indexOf('unavailable') !== -1) {
+          if (location.indexOf('Sorry, Disney+ is not available in your region.') !== -1) {
             if (debug) {
               console.log(policyName + ': Not Available')
             }
