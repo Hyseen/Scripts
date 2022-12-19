@@ -159,7 +159,7 @@ function getFilmPage(filmId, policyName) {
 async function test(policyName) {
   console.log(`开始测试 ${policyName}`)
   let startTime = new Date().getTime()
-  let result = await Promise.race([getFilmPage(81215567, policyName), timeout(t)])
+  let result = await Promise.race([getFilmPage(81280792, policyName), timeout(t)])
     .then(region => {
       return { region, policy: policyName, status: STATUS_FULL_AVAILABLE }
     })
